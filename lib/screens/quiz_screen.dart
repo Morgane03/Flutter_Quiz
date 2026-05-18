@@ -3,6 +3,7 @@ import '../services/quiz_service.dart';
 import '../models/quiz_theme.dart';
 import '../widgets/quiz_theme_card.dart';
 import '../assets/const/color.dart';
+import 'quiz_game_screen.dart';
 
 class QuizScreen extends StatefulWidget {
   const QuizScreen({super.key});
@@ -94,9 +95,12 @@ class _QuizScreenState extends State<QuizScreen> {
                               return QuizThemeCard(
                                 theme: theme,
                                 onTap: () {
-                                  Navigator.pushNamed(
+                                  Navigator.push(
                                     context,
-                                    "/quiz/${theme.id}",
+                                    MaterialPageRoute(
+                                      builder: (_) =>
+                                          QuizGameScreen(themeId: theme.id),
+                                    ),
                                   );
                                 },
                               );
