@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:responsive_navigation_bar/responsive_navigation_bar.dart';
-
-import 'home_screen.dart';
+import '../assets/const/color.dart';
+import '../pages.dart';
+import '../widgets/nav_item.dart';
 
 class MainNavigation extends StatefulWidget {
   const MainNavigation({super.key});
@@ -13,48 +13,49 @@ class MainNavigation extends StatefulWidget {
 class _MainNavigationState extends State<MainNavigation> {
   int _selectedIndex = 0;
 
-  // Liste des pages
-  final List<Widget> pages = const [
-    HomeScreen(),
-  ];
-
-  // Changement d'onglet
   void changeTab(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    setState(() => _selectedIndex = index);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: pages[_selectedIndex],
+      backgroundColor: colorbackground,
 
-      bottomNavigationBar: ResponsiveNavigationBar(
-        selectedIndex: _selectedIndex,
-        onTabChange: changeTab,
+      body: appPages[_selectedIndex],
 
-        textStyle: const TextStyle(
+      bottomNavigationBar: Container(
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        decoration: const BoxDecoration(
           color: Colors.white,
-          fontWeight: FontWeight.bold,
+          border: Border(
+            top: BorderSide(color: Color(0xFFEAEAEA)),
+          ),
         ),
 
-        navigationBarButtons: const [
-          NavigationBarButton(
-            text: 'Home',
-            icon: Icons.home,
-            backgroundGradient: LinearGradient(
-              colors: [Colors.blue, Colors.purple],
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            NavItem(
+              icon: Icons.home,
+              label: "Home",
+              active: _selectedIndex == 0,
+              onTap: () => changeTab(0),
             ),
-          ),
-          NavigationBarButton(
-            text: 'Contact',
-            icon: Icons.mail,
-            backgroundGradient: LinearGradient(
-              colors: [Colors.orange, Colors.red],
+            NavItem(
+              icon: Icons.list_alt,
+              label: "Quiz",
+              active: _selectedIndex == 1,
+              onTap: () => changeTab(1),
             ),
-          ),
-        ],
+            NavItem(
+              icon: Icons.settings,
+              label: "Config",
+              active: _selectedIndex == 2,
+              onTap: () => changeTab(2),
+            ),
+          ],
+        ),
       ),
     );
   }

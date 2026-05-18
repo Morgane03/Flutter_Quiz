@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../services/home_service.dart';
-import '../widgets/stat_card.dart';
 import '../widgets/quiz_card.dart';
 import '../widgets/home_header.dart';
 import '../widgets/stats_row.dart';
