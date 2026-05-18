@@ -28,22 +28,20 @@ class _MainNavigationState extends State<MainNavigation> {
         padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: const BoxDecoration(
           color: Colors.white,
-          border: Border(
-            top: BorderSide(color: Color(0xFFEAEAEA)),
-          ),
+          border: Border(top: BorderSide(color: Color(0xFFEAEAEA))),
         ),
 
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             NavItem(
-              icon: Icons.home,
+              icon: Icons.home_outlined,
               label: "Home",
               active: _selectedIndex == 0,
               onTap: () => changeTab(0),
             ),
             NavItem(
-              icon: Icons.list_alt,
+              icon: Icons.list,
               label: "Quiz",
               active: _selectedIndex == 1,
               onTap: () => changeTab(1),
