@@ -49,8 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
         lastname = userData["lastname"] ?? "";
 
         score = userData["score"] ?? 0;
-        quizCount = userData["quizzes_count"] ?? 0;
-        userCount = userData["users_count"] ?? 0;
+        quizCount = quizData.length;
 
         quizzes = quizData.take(3).toList();
 
@@ -98,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F5),
+      backgroundColor: colorbackground,
       body: loading
           ? const Center(child: CircularProgressIndicator())
           : SafeArea(

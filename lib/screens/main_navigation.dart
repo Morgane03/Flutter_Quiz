@@ -47,8 +47,8 @@ class _MainNavigationState extends State<MainNavigation> {
               onTap: () => changeTab(1),
             ),
             NavItem(
-              icon: Icons.settings,
-              label: "Config",
+              icon: Icons.leaderboard,
+              label: "Leaderboard",
               active: _selectedIndex == 2,
               onTap: () => changeTab(2),
             ),

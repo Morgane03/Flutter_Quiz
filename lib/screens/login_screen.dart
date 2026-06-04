@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/login_form.dart';
+import '../assets/const/color.dart';
 
 
 class LoginScreen extends StatelessWidget {
@@ -8,7 +9,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFAF8F4),
+      backgroundColor: colorbackground,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(

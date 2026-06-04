@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/register_form.dart';
+import '../assets/const/color.dart';
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
@@ -7,7 +8,7 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFAF8F4),
+      backgroundColor: colorbackground,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
