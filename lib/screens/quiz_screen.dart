@@ -99,7 +99,7 @@ class _QuizScreenState extends State<QuizScreen> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (_) =>
-                                          QuizGameScreen(themeId: theme.id),
+                                          QuizGameScreen(themeId: theme.id, themeLabel: theme.label),
                                     ),
                                   );
                                 },

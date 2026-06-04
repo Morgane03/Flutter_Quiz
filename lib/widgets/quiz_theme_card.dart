@@ -37,7 +37,7 @@ class QuizThemeCard extends StatelessWidget {
 
           const SizedBox(height: 14),
 
-          // 🔹 TOP ROW : Quiz + questions
+          // info quiz (nombre de questions)
           Row(
             children: [
               Container(
@@ -70,7 +70,7 @@ class QuizThemeCard extends StatelessWidget {
 
           const SizedBox(height: 18),
 
-          // 🔹 BUTTON FULL WIDTH
+          // bouton commencer
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
