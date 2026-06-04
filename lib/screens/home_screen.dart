@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tp_prise_en_main/screens/quiz_screen.dart';
+import 'package:tp_prise_en_main/screens/quiz_history_screen.dart';
 
 import '../services/home_service.dart';
 import '../widgets/quiz_card.dart';
 import '../widgets/home_header.dart';
 import '../widgets/stats_row.dart';
+import '../assets/const/color.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -117,12 +119,34 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     const SizedBox(height: 25),
 
-                    const Text(
-                      "Quiz récents",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "Quiz récents",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const QuizHistoryScreen(),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            "Voir tout",
+                            style: TextStyle(
+                              color: orange,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
 
                     const SizedBox(height: 10),
@@ -146,8 +170,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (_) =>
-                                            QuizScreen(themeId: themeId, themeLabel: theme?["label"] ?? "Quiz"),
+                                        builder: (_) => QuizScreen(
+                                          themeId: themeId,
+                                          themeLabel: theme?["label"] ?? "Quiz",
+                                        ),
                                       ),
                                     );
                                   },
