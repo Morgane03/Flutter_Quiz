@@ -5,6 +5,6 @@ import '../screens/quiz_screen.dart';
 
 final List<Widget> appPages = [
   const HomeScreen(),
-  const QuizScreen(),
+  const QuizScreen(themeId: null, themeLabel: null,),
   const Center(child: Text("Config")),
 ];

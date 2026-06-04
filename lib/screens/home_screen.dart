@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tp_prise_en_main/screens/quiz_screen.dart';
 
 import '../services/home_service.dart';
 import '../widgets/quiz_card.dart';
@@ -39,21 +40,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
     try {
       final userData = await service.getMe(token);
-
-      // final homeData = await service.getHomeData(token);
-      // final quizData = await service.getUserQuizzes(token);
+      final quizData = await service.getUserQuizzes(token);
 
       setState(() {
-        firstname = userData["firstname"]?.toString() ?? "";
-        lastname = userData["lastname"]?.toString() ?? "";
-
-        // final data = homeData["data"] ?? homeData;
+        firstname = userData["firstname"] ?? "";
+        lastname = userData["lastname"] ?? "";
 
         score = userData["score"] ?? 0;
         quizCount = userData["quizzes_count"] ?? 0;
         userCount = userData["users_count"] ?? 0;
 
-        quizzes = userData["quizzes"] ?? [];
+        quizzes = quizData.take(3).toList();
 
         loading = false;
       });
@@ -68,6 +65,30 @@ class _HomeScreenState extends State<HomeScreen> {
       final dt = DateTime.parse(date);
       return "${dt.day}/${dt.month}/${dt.year}";
     } catch (e) {
+      return "";
+    }
+  }
+
+  // Fonction pour afficher "Il y a X jours/heures/minutes"
+  String timeAgo(String date) {
+    try {
+      final createdAt = DateTime.parse(date);
+      final difference = DateTime.now().difference(createdAt);
+
+      if (difference.inDays > 0) {
+        return "Il y a ${difference.inDays} jour${difference.inDays > 1 ? 's' : ''}";
+      }
+
+      if (difference.inHours > 0) {
+        return "Il y a ${difference.inHours} heure${difference.inHours > 1 ? 's' : ''}";
+      }
+
+      if (difference.inMinutes > 0) {
+        return "Il y a ${difference.inMinutes} minute${difference.inMinutes > 1 ? 's' : ''}";
+      }
+
+      return "À l'instant";
+    } catch (_) {
       return "";
     }
   }
@@ -116,11 +137,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                 final theme = quiz["theme"];
 
                                 return QuizCard(
-                                  title: theme != null
-                                      ? theme["label"] ?? "Quiz"
-                                      : "Quiz",
+                                  title: theme?["label"] ?? "Quiz",
                                   subtitle:
-                                      "Score: ${quiz["final_score"] ?? 0} • ${formatDate(quiz["created_at"])}",
+                                      "Score : ${quiz["final_score"] ?? 0} • ${timeAgo(quiz["created_at"])}",
+                                  onPressed: () {
+                                    final themeId = quiz["theme_id"];
+
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) =>
+                                            QuizScreen(themeId: themeId, themeLabel: theme?["label"] ?? "Quiz"),
+                                      ),
+                                    );
+                                  },
                                 );
                               },
                             ),

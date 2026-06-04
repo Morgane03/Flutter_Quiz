@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 class QuizCard extends StatelessWidget {
   final String title;
   final String subtitle;
+  final VoidCallback onPressed;
 
   const QuizCard({
     super.key,
     required this.title,
     required this.subtitle,
+    required this.onPressed,
   });
 
   @override
@@ -22,20 +24,26 @@ class QuizCard extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Text(subtitle),
-            ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Text(subtitle),
+              ],
+            ),
           ),
-          const CircleAvatar(
-            backgroundColor: Colors.red,
-            child: Icon(Icons.play_arrow, color: Colors.white),
-          )
+          IconButton(
+            onPressed: onPressed,
+            icon: const Icon(Icons.play_arrow),
+            style: IconButton.styleFrom(
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
+            ),
+          ),
         ],
       ),
     );

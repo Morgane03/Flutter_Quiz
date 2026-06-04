@@ -6,7 +6,7 @@ import '../assets/const/color.dart';
 import 'quiz_game_screen.dart';
 
 class QuizScreen extends StatefulWidget {
-  const QuizScreen({super.key});
+  const QuizScreen({super.key, required themeId, required themeLabel});
 
   @override
   State<QuizScreen> createState() => _QuizScreenState();
