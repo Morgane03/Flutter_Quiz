@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../models/quiz_question.dart';
 import '../services/quiz_service.dart';
 import 'quiz_result_screen.dart';
@@ -27,6 +28,8 @@ class _QuizGameScreenState extends State<QuizGameScreen> {
   int currentIndex = 0;
   Map<int, String> answers = {};
 
+  bool showCorrection = false;
+
   @override
   void initState() {
     super.initState();
@@ -38,7 +41,7 @@ class _QuizGameScreenState extends State<QuizGameScreen> {
       final id = await service.startQuiz(widget.themeId);
 
       final questions = await service.getQuestions(
-        themeId: widget.themeId, // null accepté
+        themeId: widget.themeId,
       );
 
       setState(() {
@@ -51,14 +54,28 @@ class _QuizGameScreenState extends State<QuizGameScreen> {
   }
 
   void selectAnswer(QuizQuestion q, String answer) {
+    if (showCorrection) return;
+
     setState(() {
       answers[q.id] = answer;
     });
   }
 
-  void next(List<QuizQuestion> questions) {
+  Future<void> next(List<QuizQuestion> questions) async {
+    setState(() {
+      showCorrection = true;
+    });
+
+    await Future.delayed(const Duration(milliseconds: 700));
+
+    setState(() {
+      showCorrection = false;
+    });
+
     if (currentIndex < questions.length - 1) {
       setState(() => currentIndex++);
+    } else {
+      finish(questions);
     }
   }
 
@@ -74,7 +91,7 @@ class _QuizGameScreenState extends State<QuizGameScreen> {
       MaterialPageRoute(
         builder: (_) => QuizResultScreen(
           result: result,
-          questions: questions.map((e) => e).toList(),
+          questions: questions,
           answers: answers,
         ),
       ),
@@ -89,11 +106,7 @@ class _QuizGameScreenState extends State<QuizGameScreen> {
         child: FutureBuilder<List<QuizQuestion>>(
           future: futureQuestions,
           builder: (context, snapshot) {
-            if (futureQuestions == null) {
-              return const Center(child: CircularProgressIndicator());
-            }
-
-            if (!snapshot.hasData) {
+            if (futureQuestions == null || !snapshot.hasData) {
               return const Center(child: CircularProgressIndicator());
             }
 
@@ -104,13 +117,13 @@ class _QuizGameScreenState extends State<QuizGameScreen> {
               padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
-                  /// header
+                  /// HEADER
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
                         child: Text(
-                          widget.themeLabel, // nom du quiz
+                          widget.themeLabel,
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -120,7 +133,7 @@ class _QuizGameScreenState extends State<QuizGameScreen> {
                         ),
                       ),
                       Text(
-                        "${currentIndex + 1}/${10}", // question courante / total
+                        "${currentIndex + 1}/${questions.length}",
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -140,7 +153,7 @@ class _QuizGameScreenState extends State<QuizGameScreen> {
 
                   const SizedBox(height: 20),
 
-                  /// carte
+                  /// QUESTION
                   Container(
                     padding: const EdgeInsets.all(18),
                     child: Text(
@@ -156,13 +169,17 @@ class _QuizGameScreenState extends State<QuizGameScreen> {
 
                   const SizedBox(height: 25),
 
-                  /// Style des réponses
+                  /// ANSWERS
                   Expanded(
                     child: ListView.builder(
                       itemCount: question.proposals.length,
                       itemBuilder: (context, i) {
                         final p = question.proposals[i];
+
                         final selected = answers[question.id] == p;
+                        final isCorrectAnswer = p == question.answer;
+                        final isWrongSelected = selected && p != question.answer;
+
                         final letters = ["A", "B", "C", "D"];
 
                         return GestureDetector(
@@ -172,10 +189,22 @@ class _QuizGameScreenState extends State<QuizGameScreen> {
                             margin: const EdgeInsets.only(bottom: 12),
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
-                              color: selected ? pink : Colors.white,
+                              color: showCorrection
+                                  ? (isCorrectAnswer
+                                      ? Colors.green.withOpacity(0.25)
+                                      : isWrongSelected
+                                          ? Colors.red.withOpacity(0.25)
+                                          : Colors.white)
+                                  : (selected ? pink : Colors.white),
                               borderRadius: BorderRadius.circular(16),
                               border: Border.all(
-                                color: selected ? orange : darkGrey,
+                                color: showCorrection
+                                    ? (isCorrectAnswer
+                                        ? Colors.green
+                                        : isWrongSelected
+                                            ? Colors.red
+                                            : darkGrey)
+                                    : (selected ? orange : darkGrey),
                                 width: 1.5,
                               ),
                             ),
@@ -183,9 +212,8 @@ class _QuizGameScreenState extends State<QuizGameScreen> {
                               children: [
                                 CircleAvatar(
                                   radius: 14,
-                                  backgroundColor: selected
-                                      ? orange
-                                      : Colors.white,
+                                  backgroundColor:
+                                      selected ? orange : Colors.white,
                                   child: Text(
                                     letters[i],
                                     style: TextStyle(
@@ -214,7 +242,7 @@ class _QuizGameScreenState extends State<QuizGameScreen> {
                     ),
                   ),
 
-                  /// Bouuton suivant/valider
+                  /// BUTTON
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(

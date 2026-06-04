@@ -57,7 +57,7 @@ class _QuizScreenState extends State<QuizScreen> {
 
               final themes = snapshot.data ?? [];
 
-              /// 🔥 LISTE ITEMS (themes + random)
+              // ajouter un item pour le quiz aléatoire
               final items = [
                 ...themes.map((t) => QuizThemeItem.theme(t)),
                 QuizThemeItem.random(),
