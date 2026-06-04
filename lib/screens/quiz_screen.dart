@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
 import '../services/quiz_service.dart';
 import '../models/quiz_theme.dart';
+import '../models/quiz_theme_items.dart';
 import '../widgets/quiz_theme_card.dart';
 import '../assets/const/color.dart';
 import 'quiz_game_screen.dart';
 
 class QuizScreen extends StatefulWidget {
-  const QuizScreen({super.key, required themeId, required themeLabel});
+  final int? themeId;
+  final String? themeLabel;
+
+  const QuizScreen({
+    super.key,
+    this.themeId,
+    this.themeLabel,
+  });
 
   @override
   State<QuizScreen> createState() => _QuizScreenState();
@@ -49,13 +57,21 @@ class _QuizScreenState extends State<QuizScreen> {
 
               final themes = snapshot.data ?? [];
 
+              /// 🔥 LISTE ITEMS (themes + random)
+              final items = [
+                ...themes.map((t) => QuizThemeItem.theme(t)),
+                QuizThemeItem.random(),
+              ];
+
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Header
                   const Text(
                     "Tous les Quiz",
-                    style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
 
                   const SizedBox(height: 6),
@@ -67,50 +83,59 @@ class _QuizScreenState extends State<QuizScreen> {
 
                   const SizedBox(height: 20),
 
-                  // Liste des thèmes de quiz
                   Expanded(
-                    child: FutureBuilder<List<QuizTheme>>(
-                      future: futureThemes,
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
+                    child: RefreshIndicator(
+                      onRefresh: refresh,
+                      child: ListView.builder(
+                        itemCount: items.length,
+                        itemBuilder: (context, index) {
+                          final item = items[index];
 
-                        if (snapshot.hasError) {
-                          return Center(child: Text("Erreur de chargement"));
-                        }
-
-                        final themes = snapshot.data ?? [];
-
-                        return RefreshIndicator(
-                          onRefresh: refresh,
-                          child: ListView.builder(
-                            itemCount: themes.length,
-                            itemBuilder: (context, index) {
-                              
-                            // mettre theme.id null == theme random
-                              
-                              final theme = themes[index];
-
-                              return QuizThemeCard(
-                                theme: theme,
+                          /// quiz aléatoire
+                          if (item.isRandom) {
+                            return Container(
+                              margin: const EdgeInsets.only(top: 12),
+                              child: QuizThemeCard(
+                                theme: QuizTheme(
+                                  id: 0,
+                                  label: "Quiz aléatoire",
+                                  questionsCount: 10,
+                                  createdAt: "",
+                                ),
                                 onTap: () {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (_) =>
-                                          QuizGameScreen(themeId: theme.id, themeLabel: theme.label),
+                                      builder: (_) => const QuizGameScreen(
+                                        themeId: null,
+                                        themeLabel: "Quiz aléatoire",
+                                      ),
                                     ),
                                   );
                                 },
+                              ),
+                            );
+                          }
+
+                          /// quiz thématique
+                          final theme = item.theme!;
+
+                          return QuizThemeCard(
+                            theme: theme,
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => QuizGameScreen(
+                                    themeId: theme.id,
+                                    themeLabel: theme.label,
+                                  ),
+                                ),
                               );
                             },
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ],

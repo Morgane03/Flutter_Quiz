@@ -13,13 +13,12 @@ class QuizService {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-
       final List list = data['data'];
 
       return list.map((e) => QuizTheme.fromJson(e)).toList();
-    } else {
-      throw Exception("Erreur chargement quiz themes");
     }
+
+    throw Exception("Erreur chargement quiz themes");
   }
 
   Future<List<QuizQuestion>> getQuestions({int? themeId}) async {
@@ -31,19 +30,28 @@ class QuizService {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-
       final List list = data['data'];
 
       return list.map((e) => QuizQuestion.fromJson(e)).toList();
-    } else {
-      throw Exception("Erreur chargement questions");
     }
+
+    throw Exception("Erreur chargement questions");
   }
 
-  /// START QUIZ
-  Future<int> startQuiz(int themeId) async {
+  /// START QUIZ (FIX RANDOM PROPRE)
+  Future<int> startQuiz(int? themeId) async {
     final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('token'); // adapte le nom si différent
+    final token = prefs.getString('token');
+
+    final body = themeId == null
+        ? {
+            "question_limit": 10,
+            "random": true,
+          }
+        : {
+            "theme_id": themeId,
+            "question_limit": 10,
+          };
 
     final response = await http.post(
       Uri.parse("$baseUrl/quiz/quizzes/start"),
@@ -52,11 +60,8 @@ class QuizService {
         "Accept": "application/json",
         "Authorization": "Bearer $token",
       },
-      body: jsonEncode({"theme_id": themeId, "question_limit": 10}),
+      body: jsonEncode(body),
     );
-
-    print("START QUIZ STATUS: ${response.statusCode}");
-    print("START QUIZ BODY: ${response.body}");
 
     final data = jsonDecode(response.body);
 
@@ -67,13 +72,15 @@ class QuizService {
     throw Exception(data['message'] ?? "Erreur start quiz");
   }
 
-  /// SUBMIT QUIZ
   Future<Map<String, dynamic>> submitQuiz(
     int quizId,
     Map<int, String> answers,
   ) async {
     final formattedAnswers = answers.entries.map((e) {
-      return {"question_id": e.key, "user_answer": e.value};
+      return {
+        "question_id": e.key,
+        "user_answer": e.value,
+      };
     }).toList();
 
     final prefs = await SharedPreferences.getInstance();
@@ -88,9 +95,6 @@ class QuizService {
       },
       body: jsonEncode({"answers": formattedAnswers}),
     );
-
-    print("SUBMIT STATUS: ${response.statusCode}");
-    print("SUBMIT BODY: ${response.body}");
 
     final data = jsonDecode(response.body);
 

@@ -5,10 +5,14 @@ import 'quiz_result_screen.dart';
 import '../assets/const/color.dart';
 
 class QuizGameScreen extends StatefulWidget {
-  final int themeId;
+  final int? themeId;
   final String themeLabel;
 
-  const QuizGameScreen({super.key, required this.themeId, required this.themeLabel});
+  const QuizGameScreen({
+    super.key,
+    required this.themeId,
+    required this.themeLabel,
+  });
 
   @override
   State<QuizGameScreen> createState() => _QuizGameScreenState();
@@ -32,8 +36,10 @@ class _QuizGameScreenState extends State<QuizGameScreen> {
   Future<void> initQuiz() async {
     try {
       final id = await service.startQuiz(widget.themeId);
-  
-      final questions = await service.getQuestions(themeId: widget.themeId);
+
+      final questions = await service.getQuestions(
+        themeId: widget.themeId, // null accepté
+      );
 
       setState(() {
         quizId = id;
@@ -94,19 +100,17 @@ class _QuizGameScreenState extends State<QuizGameScreen> {
             final questions = snapshot.data!;
             final question = questions[currentIndex];
 
-
             return Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
-
                   /// header
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
                         child: Text(
-                            widget.themeLabel, // nom du quiz
+                          widget.themeLabel, // nom du quiz
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
