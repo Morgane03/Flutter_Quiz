@@ -57,7 +57,7 @@ class QuizResultScreen extends StatelessWidget {
 
               const SizedBox(height: 20),
 
-              /// SCORE CARD
+              /// score global
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(24),
@@ -95,7 +95,7 @@ class QuizResultScreen extends StatelessWidget {
 
               const SizedBox(height: 20),
 
-              /// DETAILS
+              /// détail question par question
               Expanded(
                 child: ListView.builder(
                   itemCount: questions.length,
@@ -139,6 +139,7 @@ class QuizResultScreen extends StatelessWidget {
                 ),
               ),
 
+              // button retour
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(

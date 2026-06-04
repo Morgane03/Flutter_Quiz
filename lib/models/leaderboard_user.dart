@@ -1,3 +1,4 @@
+// modèle pour un utilisateur dans le classement
 class LeaderboardUser {
   final int id;
   final String email;

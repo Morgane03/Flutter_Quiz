@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// helper pour associer une icône à un thème de quiz
 class ThemeIconHelper {
   static IconData getIcon(String label) {
     switch (label.toLowerCase()) {

@@ -10,6 +10,7 @@ class LeaderboardPage extends StatefulWidget {
   State<LeaderboardPage> createState() => _LeaderboardPageState();
 }
 
+// page pour afficher le classement des utilisateurs
 class _LeaderboardPageState extends State<LeaderboardPage> {
   final service = LeaderboardService();
 
@@ -67,7 +68,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
 
                 const SizedBox(height: 25),
 
-                /// TROPHY ICON
+                /// icône trophée
                 Center(
                   child: Container(
                     padding: const EdgeInsets.all(18),
@@ -91,7 +92,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
 
                 const SizedBox(height: 25),
 
-                /// liste des utilisateurs to
+                /// liste des utilisateurs dans le classement
                 ...users.asMap().entries.map((entry) {
                   final index = entry.key;
                   final user = entry.value;
@@ -136,7 +137,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                           ),
                         ),
 
-                        /// SCORE BADGE
+                        /// score
                         Container(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 12,

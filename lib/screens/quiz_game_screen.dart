@@ -189,6 +189,7 @@ class _QuizGameScreenState extends State<QuizGameScreen> {
                             margin: const EdgeInsets.only(bottom: 12),
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
+                              //couleur de fond des réponses en fonction de l'état (sélectionné, correct, incorrect)
                               color: showCorrection
                                   ? (isCorrectAnswer
                                       ? Colors.green.withOpacity(0.25)
@@ -197,6 +198,7 @@ class _QuizGameScreenState extends State<QuizGameScreen> {
                                           : Colors.white)
                                   : (selected ? pink : Colors.white),
                               borderRadius: BorderRadius.circular(16),
+                              //bordure des réponses en fonction de l'état (sélectionné, correct, incorrect)
                               border: Border.all(
                                 color: showCorrection
                                     ? (isCorrectAnswer
@@ -242,7 +244,7 @@ class _QuizGameScreenState extends State<QuizGameScreen> {
                     ),
                   ),
 
-                  /// BUTTON
+                  /// button suivant / terminer
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(

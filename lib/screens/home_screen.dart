@@ -41,6 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString("token") ?? "";
 
+    // charger les données de l'utilisateur, ses quiz et le classement
     try {
       final userData = await service.getMe(token);
       final quizData = await service.getUserQuizzes(token);
@@ -71,6 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  // Fonction pour formater la date au format "dd/MM/yyyy"
   String formatDate(String date) {
     try {
       final dt = DateTime.parse(date);
@@ -105,6 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  // build du home avec les stats de l'utilisateur, ses quiz récents et un accès au classement
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: lightSable,
@@ -160,6 +163,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     const SizedBox(height: 10),
 
+                    // liste des quiz récents de l'utilisateur
                     Expanded(
                       child: quizzes.isEmpty
                           ? const Center(child: Text("Aucun quiz trouvé"))

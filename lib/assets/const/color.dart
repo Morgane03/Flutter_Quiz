@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// Définition des couleurs utilisées dans l'application
 Color colorbackground = const Color(0xFFE7E7E1);
 Color pink = const Color(0xFFFBE9E7);
 Color darkGreen = const Color(0xFF3A4D39);

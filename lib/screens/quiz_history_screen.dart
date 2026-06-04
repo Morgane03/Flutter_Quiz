@@ -39,6 +39,7 @@ class _QuizHistoryScreenState extends State<QuizHistoryScreen> {
     }
   }
 
+// Fonction pour formater la date en "il y a X temps"
   String timeAgo(String date) {
     try {
       final createdAt = DateTime.parse(date);
@@ -84,7 +85,6 @@ class _QuizHistoryScreenState extends State<QuizHistoryScreen> {
                       subtitle:
                           "Score : ${quiz["final_score"] ?? 0} • ${timeAgo(quiz["created_at"])}",
                       onPressed: () {
-                        // Relancer le quiz ici
                       },
                     );
                   },

@@ -1,3 +1,4 @@
+// modèle pour un thème de quiz
 class QuizTheme {
   final int id;
   final String label;
