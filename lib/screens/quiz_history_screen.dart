@@ -3,6 +3,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../services/home_service.dart';
 import '../widgets/quiz_card.dart';
+import '../widgets/empty_quiz_history.dart';
+import '../assets/const/color.dart';
 
 class QuizHistoryScreen extends StatefulWidget {
   const QuizHistoryScreen({super.key});
@@ -39,7 +41,7 @@ class _QuizHistoryScreenState extends State<QuizHistoryScreen> {
     }
   }
 
-// Fonction pour formater la date en "il y a X temps"
+  // Fonction pour formater la date en "il y a X temps"
   String timeAgo(String date) {
     try {
       final createdAt = DateTime.parse(date);
@@ -66,29 +68,31 @@ class _QuizHistoryScreenState extends State<QuizHistoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Historique des quiz"),
-      ),
+      backgroundColor: lightSable,
+      appBar: AppBar(title: const Text("Historique des quiz")),
       body: loading
           ? const Center(child: CircularProgressIndicator())
           : quizzes.isEmpty
-              ? const Center(child: Text("Aucun quiz trouvé"))
-              : ListView.builder(
-                  padding: const EdgeInsets.all(16),
-                  itemCount: quizzes.length,
-                  itemBuilder: (context, index) {
-                    final quiz = quizzes[index];
-                    final theme = quiz["theme"];
+          ? EmptyQuizHistory(
+              onGoHome: () {
+                Navigator.pop(context);
+              },
+            )
+          : ListView.builder(
+              padding: const EdgeInsets.all(16),
+              itemCount: quizzes.length,
+              itemBuilder: (context, index) {
+                final quiz = quizzes[index];
+                final theme = quiz["theme"];
 
-                    return QuizCard(
-                      title: theme?["label"] ?? "Quiz",
-                      subtitle:
-                          "Score : ${quiz["final_score"] ?? 0} • ${timeAgo(quiz["created_at"])}",
-                      onPressed: () {
-                      },
-                    );
-                  },
-                ),
+                return QuizCard(
+                  title: theme?["label"] ?? "Quiz",
+                  subtitle:
+                      "Score : ${quiz["final_score"] ?? 0} • ${timeAgo(quiz["created_at"])}",
+                  onPressed: () {},
+                );
+              },
+            ),
     );
   }
 }

@@ -1,5 +1,3 @@
-import 'quiz_theme.dart';
-
 /// modèle pour une question de quiz
 class QuizQuestion {
   final int id;

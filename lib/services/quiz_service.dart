@@ -38,7 +38,7 @@ class QuizService {
     throw Exception("Erreur chargement questions");
   }
 
-  /// START QUIZ (FIX RANDOM PROPRE)
+  /// Démarre un quiz pour un thème donné (ou aléatoire si themeId est null) et retourne l'id du quiz créé
   Future<int> startQuiz(int? themeId) async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token');
