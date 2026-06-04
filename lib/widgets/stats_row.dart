@@ -5,13 +5,13 @@ import 'stat_card.dart';
 class StatsRow extends StatelessWidget {
   final int quizCount;
   final int score;
-  final int userCount;
+  final int userRank;
 
   const StatsRow({
     super.key,
     required this.quizCount,
     required this.score,
-    required this.userCount,
+    required this.userRank,
   });
 
   @override
@@ -28,8 +28,8 @@ class StatsRow extends StatelessWidget {
           value: score.toString(),
         ),
         StatCard(
-          label: "Users",
-          value: userCount.toString(),
+          label: "Rang",
+          value: userRank.toString(),
         ),
       ],
     );

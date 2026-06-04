@@ -78,7 +78,7 @@ class _QuizGameScreenState extends State<QuizGameScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: colorbackground,
+      backgroundColor: lightSable,
       body: SafeArea(
         child: FutureBuilder<List<QuizQuestion>>(
           future: futureQuestions,

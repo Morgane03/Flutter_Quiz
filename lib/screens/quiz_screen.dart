@@ -32,7 +32,7 @@ class _QuizScreenState extends State<QuizScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: colorbackground,
+      backgroundColor: lightSable,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -90,6 +90,9 @@ class _QuizScreenState extends State<QuizScreen> {
                           child: ListView.builder(
                             itemCount: themes.length,
                             itemBuilder: (context, index) {
+                              
+                            // mettre theme.id null == theme random
+                              
                               final theme = themes[index];
 
                               return QuizThemeCard(

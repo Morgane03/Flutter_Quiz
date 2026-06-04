@@ -34,7 +34,7 @@ class QuizResultScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: colorbackground,
+      backgroundColor: lightSable,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16),

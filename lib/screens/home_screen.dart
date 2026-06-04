@@ -24,9 +24,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   int score = 0;
   int quizCount = 0;
-  int userCount = 0;
+  int userRank = 0;
 
   List quizzes = [];
+  List leaderboard = [];
 
   bool loading = true;
 
@@ -43,6 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
     try {
       final userData = await service.getMe(token);
       final quizData = await service.getUserQuizzes(token);
+      final leaderboardData = await service.getLeaderboard(token);
 
       setState(() {
         firstname = userData["firstname"] ?? "";
@@ -53,6 +55,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
         quizzes = quizData.take(3).toList();
 
+        leaderboard = leaderboardData;
+
+        // trouver le rang de l'utilisateur connecté
+        final userId = userData["id"];
+
+        final index = leaderboard.indexWhere((u) => u["id"] == userId);
+
+        userRank = index != -1 ? index + 1 : 0;
         loading = false;
       });
     } catch (e) {
@@ -97,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: colorbackground,
+      backgroundColor: lightSable,
       body: loading
           ? const Center(child: CircularProgressIndicator())
           : SafeArea(
@@ -113,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     StatsRow(
                       quizCount: quizCount,
                       score: score,
-                      userCount: userCount,
+                      userRank: userRank,
                     ),
 
                     const SizedBox(height: 25),

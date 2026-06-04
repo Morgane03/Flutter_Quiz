@@ -71,4 +71,21 @@ class HomeService {
       throw Exception(data["errors"] ?? "Erreur utilisateur");
     }
   }
+
+  Future<List<dynamic>> getLeaderboard(String token) async {
+    final response = await http.get(
+      Uri.parse("$baseUrl/users/leaderboard"),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return data["data"] ?? [];
+    } else {
+      throw Exception("Erreur leaderboard API");
+    }
+  }
 }

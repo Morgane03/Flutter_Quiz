@@ -30,7 +30,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: colorbackground,
+      backgroundColor: lightSable,
       body: RefreshIndicator(
         onRefresh: refresh,
         child: FutureBuilder<List<LeaderboardUser>>(
