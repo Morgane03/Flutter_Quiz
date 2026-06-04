@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/quiz_theme.dart';
 import '../assets/const/color.dart';
+import '../helpers/theme_icon_helper.dart';
 
 class QuizThemeCard extends StatelessWidget {
   final QuizTheme theme;
@@ -29,12 +30,26 @@ class QuizThemeCard extends StatelessWidget {
         children: [
           const SizedBox(height: 14),
 
-          // 🔹 TITLE
-          Text(
-            theme.label,
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
+          // info thème (icône + nom)
+          Row(
+            children: [
+              Icon(
+                ThemeIconHelper.getIcon(theme.label),
+                color: darkGreen,
+                size: 20,
+              ),
 
+              const SizedBox(width: 6),
+
+              Text(
+                theme.label,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
           const SizedBox(height: 14),
 
           // info quiz (nombre de questions)
